@@ -18,7 +18,7 @@ class Ball(pygame.sprite.Sprite):
         self.color = config.WHITE
         self.speed = Ball.speed
 
-        screen_width, screen_height= self.scene.game.screen.get_size()
+        screen_width, screen_height = self.scene.game.screen.get_size()
         min_side = min(screen_width, screen_height)
         width =  int(min_side * 0.03)
         height = int(min_side * 0.03)
@@ -47,7 +47,7 @@ class Ball(pygame.sprite.Sprite):
 
     def collide_barders(self) -> None:
         '''столкновение с экраном'''
-        if self.rect.top > 0 and self.rect.bottom < self.game.window_height:
+        if self.rect.top > 0 and self.rect.bottom < self.scene.game.window_height:
             return
         
         self.angle *= -1
@@ -67,7 +67,7 @@ class Ball(pygame.sprite.Sprite):
         self.collide_rackets()
 
     def check_goal(self) -> None:
-        if self.rect.right >  self.game.window_width:
+        if self.rect.right >  self.scene.game.window_width:
             self.scene.score_left.value += 1
             self.goto_start()
             self.scene.racket_left.goto_start()

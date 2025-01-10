@@ -30,6 +30,9 @@ class Racket(ABC, pygame.sprite.Sprite):
     def goto_start(self):
         self.rect.centerx = self.center_x
         self.rect.centery = self.scene.game.window_height // 2
+    
+    def move():
+        pass
 
     def collide_borders(self):
         if self.rect.bottom > self.scene.game.window_height:
@@ -38,8 +41,8 @@ class Racket(ABC, pygame.sprite.Sprite):
             self.rect.top = 0
 
     def update(self):
-        self.collide_borders()
         self.move()
+        self.collide_borders()
 
 
 class RacketAuto(Racket):
@@ -60,9 +63,14 @@ class RacketAuto(Racket):
 class RacketManual(Racket):
     def __init__(self, center_x, key_up, key_down, scene):
         super().__init__(center_x, scene)
+        self.key_up = key_up
+        self.key_down = key_down
 
     def move(self):
-        if self.scene.keys_pressed[self.scene.key_down]:
+        if not self.scene.keys_pressed:
+            return
+        
+        if self.scene.keys_pressed[self.key_down]:
             self.rect.y += self.speed
-        elif self.scene.keys_pressed[self.scene.key_up]:
+        elif self.scene.keys_pressed[self.key_up]:
             self.rect.y -= self.speed

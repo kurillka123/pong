@@ -26,9 +26,9 @@ class Game:
             рендер (отрисовка)
             ожидание FPS
             '''
-            self.scene.handle_events() # вызов функции handle_events
-            self.scene.update() # вызов функции update
-            self.scene.render() # вызов функции render
+            self.scene.handle_events()  # вызов функции handle_events
+            self.scene.update()  # вызов функции update
+            self.scene.render()  # вызов функции render
             self.clock.tick(config.FPS)
         pygame.quit()
                     
@@ -36,5 +36,5 @@ class Game:
         self.scene.all_sprites.update()
 
 if __name__ == '__main__':
-    game = Game()# создание экземпляра класса
+    game = Game()  # создание экземпляра класса
     game.main_loop()

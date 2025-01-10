@@ -6,7 +6,7 @@ from racket import RacketAuto, RacketManual, Racket # импорт RacketAuto, R
 from score import Score # импорт Score из файла score
 #ABC - абстрактный класс(нельзя создать экземпляр)
 
-class Scene(ABC):
+class Scene(ABC):#родительская сцена
     @abstractmethod
     def __init__(self, game):
         self.game = game
@@ -21,6 +21,8 @@ class Scene(ABC):
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     self.game.is_running = False
+                elif event.key == pygame.K_1:
+                    self.game.scene = GameplayScene(self)
 
                 
         self.keys_pressed = pygame.key.get_pressed()
@@ -57,16 +59,37 @@ class GameplayScene(Scene):
         self.score_right = Score(int(self.game.window_width * 0.75), 100, self)
 
     def render(self):
-         '''отрисовывает обьекты на екране'''
-         self.all_sprites.draw(self.game.screen)
-         pygame.display.flip()
+        '''отрисовывает обьекты на екране'''
+        self.game.screen.fill(config.BLACK)
+        self.all_sprites.draw(self.game.screen)
+        pygame.display.flip()
+
 
 class MenuScene(Scene):
     def __init__(self, game):
         super().__init__(game)
-        pass
+        self.text = Text(self)
+
+    def handle_events(self):
+        super().handle_events()
+        if self.keys_pressed[pygame.K_1]:
+            self.game.scene = GameplayScene(self.game)
 
     def render(self):
-         '''отрисовывает обьекты на екране'''
-         self.all_sprites.draw(self.game.screen)
-         pygame.display.flip()
+        self.game.screen.fill(config.BLACK)
+        self.all_sprites.draw(self.game.screen)
+        pygame.display.flip()
+
+
+class Text(pygame.sprite.Sprite):
+    def __init__(self, scene):
+        super().__init__()
+        self.scene = scene
+        self.x = self.scene.game.window_width
+        self.y = self.scene.game.window_height
+        font = pygame.font.Font(None, 74)
+        self.image = font.render('1 - играть', True, config.WHITE)
+        self.rect = self.image.get_rect()
+        self.rect.center = (self.x // 2, self.y // 2)
+        self.scene.all_sprites.add(self)
+        
